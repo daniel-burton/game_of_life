@@ -218,6 +218,10 @@ function run() {
   let pauseButton = document.getElementById("pause");
   let instruction = document.getElementById("instruction");
   let running = 0; 
+  window.addEventListener("keydown", function(event) {
+    if (event.key == 'r' || event.key == 'R') {
+        randomCell();
+    }});
    
   startButton.addEventListener("click", start);
   randomizeButton.addEventListener("click", random);
@@ -242,7 +246,17 @@ function run() {
     pauseButton.value = "Pause";
     console.log(running);
   }
-  
+
+  function randomCell() {
+    let randX = Math.floor(Math.random() * board.size["x"]);
+    let randY = Math.floor(Math.random() * board.size["y"]);
+    if (board.get(randX, randY) == 1) {
+      randomCell();
+    } else {
+      board.set(randX, randY, 1);
+      board.htmlPrint();
+    }
+  }
   function random() {
     reset();
     if (board == null) {
@@ -288,7 +302,7 @@ function run() {
     startButton.value = "Start this board";
     createButton.value = "Create new board";
     randomizeButton.value = "Randomize current board";
-    instruction.textContent = "Click inside the board to create cells!";
+    instruction.textContent = "Click inside the board, press the 'randomize' button, or type 'r' to create cells!"; 
     reset();
     if (ySizeBox.value.length != 0) {
       ySize = parseInt(ySizeBox.value);
