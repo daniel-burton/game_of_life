@@ -2,6 +2,7 @@
   <html>
 
   <head>
+    <meta charset="UTF-8">
     <title>The Game of Life</title>
     <script defer type="text/javascript" src="life.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -24,22 +25,40 @@
         <ul>
           <li>Will be hospitable to new life if it has three living neighbors <strong>(reproduction).</strong></li>
         </ul>
+      <!-- <div class="button">
+      <h3>Select manual cell creation method:</h3>
+      <input type="radio" id="drag" name="selectionMethod" value="Drag!">
+      <label for="drag">Drag</label>
+      <input type="radio" id="click" name="selectionMethod" value="Click!" checked>
+      <label for="click">Click</label>
+      </div>
+      -->
+      <h3>Select Board Size:</h3>
+
+      <div class="button">
       <label for="xAxis">X Axis Size (1 to 50):</label>
       <input type="text" id="xAxis" minlength="1" maxlength="2">
-      <br>
+      </div>
+      <div class="button">
       <label for="yAxis">Y Axis Size (1 to 99):</label>
       <input type="text" id="yAxis" minlength="1" maxlength="2">
-        <br>
+      </div>
+      <h3>Controls:</h3>
+      <div class="button">
       <input type="button" id="start" value="Start with random board!">
-        <br>
+      </div>
+      <div class="button">
       <input type="button" id="create" value="Create World">
-        <br>
+      </div>
+      <div class="button">
       <input type="button" id="randomize" value="Randomize World">
-        <br>
+      </div>
+      <div class="button">
       <input type="button" id="pause" value="Pause">
 
       </div>
 
+    </div>
     </div>
     <div id="game">
       <p id="label">Turn number: 0, Cells currently alive: 0.</p>

@@ -7,21 +7,21 @@ function fromCoordinates(board, index) {
   return [index % board.size["x"], Math.floor(index / board.size["x"])];
 }
 
-//function wait(seconds) {
-//  //only use for local terminal-- not for web use
-//  seconds *= 1000;
-//  let start = new Date().getTime();
-//  let end = start;
-//  while (end < start + seconds) {
-//    end = new Date().getTime();
-//  }
-//}
+function wait(seconds) {
+  //only use for local terminal-- not for web use
+  seconds *= 1000;
+  let start = new Date().getTime();
+  let end = start;
+  while (end < start + seconds) {
+    end = new Date().getTime();
+  }
+}
 
 function getToken() {
   //return a random member of the tokens list to represent a living cell
   //let tokens = ["@", "#", "$", "%", "&", "*", "?", "~"];
   let tokens = ["0", "o", "O", "¤", "°", "Ɵ", "ʘ"];
-  //let tokens = ["x"];
+  //let tokens = ["X"];
   return tokens[Math.floor(tokens.length * Math.random())];
 }
 
@@ -41,13 +41,25 @@ class GameBoard {
   }
 
   get(x, y) {
-    //get the value of a given cell
-    if (x < 0 || x > this.size["x"] || y < 0 || y > this.size["y"]) {
-      return 0;
+    let xSize = this.size["x"];
+    let ySize = this.size["y"];
+
+    if (x < 0) {
+      return this.get(xSize, y);
+    } else if (x >= xSize) {
+      return this.get(0, y);
+    } else if (y < 0) {
+      return this.get(x, ySize);
+    } else if (y >= this.size["y"]) {
+      return this.get(x, 0);
     } else {
       return this.cells[toCoordinates(this, x, y)];
     }
   }
+
+    //get the value of a given cell
+    //if (x < 0 || x > this.size["x"] || y < 0 || y > this.size["y"]) {
+      //return 0;
 
   set(x, y, value) {
     //set the value of a given cell
@@ -71,13 +83,13 @@ class GameBoard {
     return toPrint;
   }
 
-  //consolePrint() {
-  //  //print the current game state to the console
-  //  let toPrint = this.printHelper();
-  //  let rows = toPrint.map(r => r.join(" "));
-  //  console.log(rows.join("\n"));
-  //  console.log("\n");
-  //}
+  consolePrint() {
+    //print the current game state to the console
+    let toPrint = this.printHelper();
+    let rows = toPrint.map(r => r.join(" "));
+    console.log(rows.join("\n"));
+    console.log("\n");
+  }
 
   htmlPrint() {
     //change the values of <td> elements to be their new value (living or dead)
@@ -107,7 +119,7 @@ class GameBoard {
   }
 
   getNeighbors(x, y) {
-    //return an array of all neighbors
+    //return an array of all neighbors' coordinates 
     let neighbors = [
       [x - 1, y - 1],
       [x - 1, y],
@@ -118,13 +130,27 @@ class GameBoard {
       [x + 1, y - 1],
       [x + 1, y + 1]
     ];
-    return neighbors;
+    return neighbors.map(
+      n => {
+      if (n[0] < 0) {
+        return [this.size["x"] - 1, n[1]];
+      } else if (n[0] >= this.size["x"]) {
+        return [0, n[1]];
+      } else if (n[1] < 0) {
+        return [n[0], this.size["y"] - 1];
+      } else if (n[1] >= this.size["y"]) {
+        return [n[0], 0];
+      } else {
+        return [n[0], n[1]];
+      }
+      });
   }
+
 
   neighborCount(x, y) {
     //return the count of living neighbors
     return this.getNeighbors(x, y)
-      .map(n => this.get(n[0], n[1]))
+      .map(arr => this.get(arr[0], arr[1]))
       .filter(cell => cell == 1).length;
   }
 
@@ -158,28 +184,28 @@ class GameBoard {
   }
 }
 
-//function consoleRun() {
-//  //runs the Game of Life in the console
-//  let board = new GameBoard(26 * 3, 35);
-//  board.randomize();
-//  console.log("\n");
-//  board.consolePrint();
-//  let alive = 1;
-//  let turn = 0;
-//  while (alive > 0) {
-//    turn += 1;
-//    alive = board.update();
-//    console.log(`\nTurn ${turn} Cells Alive: ${alive}\n`);
-//    board.consolePrint();
-//    wait(0.15);
-//  }
-//}
+function consoleRun() {
+  //runs the Game of Life in the console
+  let board = new GameBoard(46, 30);
+  board.randomize();
+  console.log("\n");
+  board.consolePrint();
+  let alive = 1;
+  let turn = 0;
+  while (alive > 0) {
+    turn += 1;
+    alive = board.update();
+    console.log(`\nTurn ${turn} Cells Alive: ${alive}\n`);
+    board.consolePrint();
+    wait(0.15);
+  }
+}
 
 
 function run() {
   let board = null;
   let process = undefined;
-  let defaultBoard = [50, 20];
+  let defaultBoard = [60, 25];
   let tableElement = document.getElementById("board");
   let label = document.getElementById("label");
   let startButton = document.getElementById("start");
@@ -191,55 +217,55 @@ function run() {
   let alive = 0;
   let pauseButton = document.getElementById("pause");
   let instruction = document.getElementById("instruction");
- 
- 
- startButton.addEventListener("click", start);
- randomizeButton.addEventListener("click", random);
- createButton.addEventListener("click", createBoard);
+  let running = 0; 
+   
+  startButton.addEventListener("click", start);
+  randomizeButton.addEventListener("click", random);
+  createButton.addEventListener("click", createBoard);
   pauseButton.addEventListener("click", pause);
-
- function pause() {
-   if (pauseButton.value == "Continue") {
-     process = setInterval(tick, 700);
-     pauseButton.value = "Pause";
-   } else {
-     pauseButton.value = "Continue";
-     clearInterval(process);
-   }
- }
   
- function start() {
-   reset();
-   if (board == null) {
-     random();
-   }
-   process = setInterval(tick, 700);
- }
- 
-  function random() {
-     reset();
+  function pause() {
+    reset();
+    tick();
+  }
+   
+  function start() {
+    reset();
     if (board == null) {
-      createBoard(50, 20);
+      random();
+    }
+    process = setInterval(tick, 400);
+    running = 1;
+    pauseButton.value = "Pause";
+    console.log(running);
+  }
+  
+  function random() {
+    reset();
+    if (board == null) {
+      createBoard(60, 25);
     }
     board.randomize();
     board.htmlPrint();
- }
-  
+  }
+   
   function reset() {
+    running = 0;
+    pauseButton.value = "One Step";
     if (process != undefined) {
       clearInterval(process);
     }
     alive = 0;
     turn = 0;
   }
-  
+   
   function tick() {
     turn++;
     alive = board.update();
     board.htmlPrint();
     label.textContent = `Turn number: ${turn}, Cells currently alive: ${alive}`;
- }
-  
+  }
+   
   function clickCell(id) {
     console.log(`Clicked ${id}`);
     let cell = document.getElementById(id);
@@ -248,12 +274,14 @@ function run() {
     let y = parseInt(id.split(",")[1]);
     board.set(x, y, 1);
     console.log(board.cells);
- }
-  
+    console.log(board.printHelper());
+    console.log(board.getNeighbors(x,y));
+  }
+   
   function createBoard() {
     reset();
-    let xSize = 50;
-    let ySize = 20;
+    let xSize = 60;
+    let ySize = 25;
     startButton.value = "Start this board";
     createButton.value = "Create new board";
     randomizeButton.value = "Randomize current board";
@@ -285,8 +313,9 @@ function run() {
       }
       tableElement.appendChild(row);
     }
+   }
   }
-}
 
 
 run();
+//consoleRun();

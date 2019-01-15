@@ -16,9 +16,15 @@ html {
   margin-left: 20px;
 }
 
-button {
-  margin: 15px;
+.button {
+  margin: 7px;
 }
+
+.buttonLabel {
+  font-size:12px;
+  font-weight: bold;
+  margin-top:7px;
+  }
 
 body {
   background-color:#e5e8e8;
@@ -32,9 +38,9 @@ td {
   border-collapse:collapse;
   width: 11px;
   min-width: 11px;
-  height: 28px;
-  min-height: 28px;
-  max-height: 28px;
+  height: 24px;
+  min-height: 24px;
+  max-height: 24px;
 }
 
 tr {
