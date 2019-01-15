@@ -1,11 +1,16 @@
 html {
-  font-family: monospace;
+  font-family: serif;
 }
 
 #sidebar {
   float:right;
   width:30%;
 }
+
+.button {
+  margin:7px;
+}
+
 
 #game {
   width:60%;
@@ -14,10 +19,6 @@ html {
 
 #rules {
   margin-left: 20px;
-}
-
-button {
-  margin: 15px;
 }
 
 body {

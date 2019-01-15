@@ -7,15 +7,15 @@ function fromCoordinates(board, index) {
   return [index % board.size["x"], Math.floor(index / board.size["x"])];
 }
 
-//function wait(seconds) {
-//  //only use for local terminal-- not for web use
-//  seconds *= 1000;
-//  let start = new Date().getTime();
-//  let end = start;
-//  while (end < start + seconds) {
-//    end = new Date().getTime();
-//  }
-//}
+function wait(seconds) {
+  //only use for local terminal-- not for web use
+  seconds *= 1000;
+  let start = new Date().getTime();
+  let end = start;
+  while (end < start + seconds) {
+    end = new Date().getTime();
+  }
+}
 
 function getToken() {
   //return a random member of the tokens list to represent a living cell
@@ -71,13 +71,13 @@ class GameBoard {
     return toPrint;
   }
 
-  //consolePrint() {
-  //  //print the current game state to the console
-  //  let toPrint = this.printHelper();
-  //  let rows = toPrint.map(r => r.join(" "));
-  //  console.log(rows.join("\n"));
-  //  console.log("\n");
-  //}
+  consolePrint() {
+    //print the current game state to the console
+    let toPrint = this.printHelper();
+    let rows = toPrint.map(r => r.join(" "));
+    console.log(rows.join("\n"));
+    console.log("\n");
+  }
 
   htmlPrint() {
     //change the values of <td> elements to be their new value (living or dead)
@@ -158,22 +158,22 @@ class GameBoard {
   }
 }
 
-//function consoleRun() {
-//  //runs the Game of Life in the console
-//  let board = new GameBoard(26 * 3, 35);
-//  board.randomize();
-//  console.log("\n");
-//  board.consolePrint();
-//  let alive = 1;
-//  let turn = 0;
-//  while (alive > 0) {
-//    turn += 1;
-//    alive = board.update();
-//    console.log(`\nTurn ${turn} Cells Alive: ${alive}\n`);
-//    board.consolePrint();
-//    wait(0.15);
-//  }
-//}
+function consoleRun() {
+  //runs the Game of Life in the console
+  let board = new GameBoard(26 * 3, 35);
+  board.randomize();
+  console.log("\n");
+  board.consolePrint();
+  let alive = 1;
+  let turn = 0;
+  while (alive > 0) {
+    turn += 1;
+    alive = board.update();
+    console.log(`\nTurn ${turn} Cells Alive: ${alive}\n`);
+    board.consolePrint();
+    wait(0.15);
+  }
+}
 
 
 function run() {
