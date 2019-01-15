@@ -1,0 +1,55 @@
+
+  <html>
+
+  <head>
+    <title>The Game of Life</title>
+    <script defer type="text/javascript" src="life.js"></script>
+    <link rel="stylesheet" href="style.css">
+  </head>
+
+  <body>
+    
+    <div id="sidebar">
+      <h1>The Game of Life</h1>
+      <div id="rules">
+        <p>Cells floating in the great sea...</p>
+        <h2>Conway's Rules:</h2>
+        <h3>A living cell:</h3>
+        <ul>
+          <li>With fewer than two living neighbors dies <strong>(isolation).</strong></li>
+          <li>With two or three living neighbors survives <strong>(community).</strong></li>
+          <li>With more than three living neighbors dies <strong>(overpopulation).</strong></li>
+        </ul>
+        <h3>An empty spot:</h3>
+        <ul>
+          <li>Will be hospitable to new life if it has three living neighbors <strong>(reproduction).</strong></li>
+        </ul>
+      <label for="xAxis">X Axis Size (1 to 50):</label>
+      <input type="text" id="xAxis" minlength="1" maxlength="2">
+      <br>
+      <label for="yAxis">Y Axis Size (1 to 99):</label>
+      <input type="text" id="yAxis" minlength="1" maxlength="2">
+        <br>
+      <input type="button" id="start" value="Start with random board!">
+        <br>
+      <input type="button" id="create" value="Create World">
+        <br>
+      <input type="button" id="randomize" value="Randomize World">
+        <br>
+      <input type="button" id="pause" value="Pause">
+
+      </div>
+
+    </div>
+    <div id="game">
+      <p id="label">Turn number: 0, Cells currently alive: 0.</p>
+      <table id="board">
+        <tr>
+        </tr>
+      </table>
+      <p id="instruction">Click 'Create World' to create a default world, or set your own dimensions.
+      </p>
+    </div>
+  </body>
+
+  </html>
