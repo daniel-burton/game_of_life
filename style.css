@@ -1,0 +1,54 @@
+html {
+  font-family: monospace;
+}
+
+#sidebar {
+  float:right;
+  width:30%;
+}
+
+#game {
+  width:60%;
+  float:left;
+}
+
+#rules {
+  margin-left: 20px;
+}
+
+button {
+  margin: 15px;
+}
+
+body {
+  background-color:#e5e8e8;
+}
+
+td {
+  font-family: monospace;
+  padding: 3px;
+  font-size: 12px;
+  /*border: solid black;*/
+  border-collapse:collapse;
+  width: 11px;
+  min-width: 11px;
+  height: 28px;
+  min-height: 28px;
+  max-height: 28px;
+}
+
+tr {
+  padding: 2px;
+  border-collapse:collapse;
+}
+
+table {
+  table-layout: fixed;
+  border-collapse:collapse;
+  border:solid gray;
+  border-width:1px;
+}
+
+h1 {
+  margin-top: 25px;
+}
