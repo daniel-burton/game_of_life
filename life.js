@@ -223,6 +223,9 @@ function run() {
   randomizeButton.addEventListener("click", random);
   createButton.addEventListener("click", createBoard);
   pauseButton.addEventListener("click", pause);
+  tableElement.addEventListener("click", function (event) {
+      clickCell(event.target.id);
+      });
   
   function pause() {
     reset();
@@ -307,7 +310,6 @@ function run() {
         let id = `${x},${y}`;
         cell.setAttribute("id", id);
         cell.innerText = " ";
-        cell.addEventListener("click", () => clickCell(id));
         row.appendChild(cell);
         
       }
