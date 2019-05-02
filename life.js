@@ -3,10 +3,6 @@ function toCoordinates(board, x, y) {
   return y * board.size["x"] + x;
 }
 
-function fromCoordinates(board, index) {
-  return [index % board.size["x"], Math.floor(index / board.size["x"])];
-}
-
 function wait(seconds) {
   //only use for local terminal-- not for web use
   seconds *= 1000;
@@ -21,7 +17,6 @@ function getToken() {
   //return a random member of the tokens list to represent a living cell
   //let tokens = ["@", "#", "$", "%", "&", "*", "?", "~"];
   let tokens = ["0", "o", "O", "¤", "°", "Ɵ", "ʘ"];
-  //let tokens = ["X"];
   return tokens[Math.floor(tokens.length * Math.random())];
 }
 
@@ -41,6 +36,7 @@ class GameBoard {
   }
 
   get(x, y) {
+    // ensure border cells work
     let xSize = this.size["x"];
     let ySize = this.size["y"];
 
@@ -56,10 +52,6 @@ class GameBoard {
       return this.cells[toCoordinates(this, x, y)];
     }
   }
-
-    //get the value of a given cell
-    //if (x < 0 || x > this.size["x"] || y < 0 || y > this.size["y"]) {
-      //return 0;
 
   set(x, y, value) {
     //set the value of a given cell
@@ -184,7 +176,7 @@ class GameBoard {
   }
 }
 
-function consoleRun() {
+/*function consoleRun() {
   //runs the Game of Life in the console
   let board = new GameBoard(46, 30);
   board.randomize();
@@ -199,13 +191,16 @@ function consoleRun() {
     board.consolePrint();
     wait(0.15);
   }
-}
+}*/
 
 
 function run() {
   let board = null;
   let process = undefined;
   let defaultBoard = [60, 25];
+  let turn = 0;
+  let alive = 0;
+  let running = 0; 
   let tableElement = document.getElementById("board");
   let label = document.getElementById("label");
   let startButton = document.getElementById("start");
@@ -213,30 +208,37 @@ function run() {
   let randomizeButton = document.getElementById("randomize");
   let xSizeBox = document.getElementById("xAxis");
   let ySizeBox = document.getElementById("yAxis");
-  let turn = 0;
-  let alive = 0;
   let pauseButton = document.getElementById("pause");
   let instruction = document.getElementById("instruction");
-  let running = 0; 
-  window.addEventListener("keydown", function(event) {
-    if (event.key == 'r' || event.key == 'R') {
-        randomCell();
-    }});
+  
    
   startButton.addEventListener("click", start);
   randomizeButton.addEventListener("click", random);
   createButton.addEventListener("click", createBoard);
   pauseButton.addEventListener("click", pause);
-  tableElement.addEventListener("click", function (event) {
-      clickCell(event.target.id);
-      });
+  tableElement.addEventListener("click", function(event) {
+    clickCell(event.target.id);
+  })
+  
+  window.addEventListener("keydown", function(event) {
+    if (event.key == 'r') {
+      randomCell(1);
+    }});
+  
+  window.addEventListener("keydown", function(event) {
+    if (event.key == 'R') {
+      randomCell(5);
+    }});
+
   
   function pause() {
+    // pause the simulation
     reset();
     tick();
   }
    
   function start() {
+    // start the simulation
     reset();
     if (board == null) {
       random();
@@ -246,18 +248,9 @@ function run() {
     pauseButton.value = "Pause";
     console.log(running);
   }
-
-  function randomCell() {
-    let randX = Math.floor(Math.random() * board.size["x"]);
-    let randY = Math.floor(Math.random() * board.size["y"]);
-    if (board.get(randX, randY) == 1) {
-      randomCell();
-    } else {
-      board.set(randX, randY, 1);
-      board.htmlPrint();
-    }
-  }
+  
   function random() {
+    //randomize the board
     reset();
     if (board == null) {
       createBoard(60, 25);
@@ -277,10 +270,24 @@ function run() {
   }
    
   function tick() {
+    // advance the simulation one generation
     turn++;
     alive = board.update();
     board.htmlPrint();
     label.textContent = `Turn number: ${turn}, Cells currently alive: ${alive}`;
+  }
+  
+  function randomCell(n) {
+    for (let i = 0; i < n; i++) {
+      let randX = Math.floor(Math.random() * board.size["x"]);
+      let randY = Math.floor(Math.random() * board.size["y"]);
+      if (board.get(randX, randY) == 1) {
+        randomCell(1);
+      } else {
+        board.set(randX, randY, 1);
+      }
+    }  
+    board.htmlPrint();
   }
    
   function clickCell(id) {
@@ -297,12 +304,12 @@ function run() {
    
   function createBoard() {
     reset();
-    let xSize = 60;
+    let xSize = 58;
     let ySize = 25;
     startButton.value = "Start this board";
     createButton.value = "Create new board";
     randomizeButton.value = "Randomize current board";
-    instruction.textContent = "Click inside the board, press the 'randomize' button, or type 'r' to create cells!"; 
+    instruction.textContent = "Click inside the board, press the 'randomize' button, or type r's to create cells! 'r' creates 1 and 'R' creates 5.";
     reset();
     if (ySizeBox.value.length != 0) {
       ySize = parseInt(ySizeBox.value);

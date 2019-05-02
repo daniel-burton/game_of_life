@@ -4,6 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <title>The Game of Life</title>
+
     <script defer type="text/javascript" src="life.js"></script>
     <link rel="stylesheet" href="style.css">
   </head>
@@ -12,9 +13,10 @@
     
     <div id="sidebar">
       <h1>The Game of Life</h1>
+          
       <div id="rules">
-        <p>Cells floating in the great sea...</p>
-        <h2>Conway's Rules:</h2>
+        <p>Cells floating in the great sea of life... in plain Javascript.</p>
+        <h2><a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Rules:</a></h2>
         <h3>A living cell:</h3>
         <ul>
           <li>With fewer than two living neighbors dies <strong>(isolation).</strong></li>
@@ -45,7 +47,7 @@
       </div>
       <h3>Controls:</h3>
       <div class="button">
-      <input type="button" id="start" value="Start with random board!">
+      <input type="button" id="start" value="Start With Random World">
       </div>
       <div class="button">
       <input type="button" id="create" value="Create World">
@@ -55,7 +57,8 @@
       </div>
       <div class="button">
       <input type="button" id="pause" value="Pause">
-
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
       </div>
 
     </div>
@@ -69,6 +72,8 @@
       <p id="instruction">Click 'Create World' to create a default world, or set your own dimensions.
       </p>
     </div>
+    
+    
   </body>
 
   </html>
